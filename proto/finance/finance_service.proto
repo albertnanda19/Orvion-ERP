@@ -1,0 +1,67 @@
+syntax = "proto3";
+option java_package = "com.orvion.finance.grpc";
+option java_multiple_files = true;
+package finance;
+
+service FinanceService {
+  rpc GetAccountBalance (AccountBalanceRequest) returns (AccountBalanceResponse);
+  rpc GetInvoiceSummary (InvoiceSummaryRequest) returns (InvoiceSummaryResponse);
+  rpc ValidateBudget (BudgetValidationRequest) returns (BudgetValidationResponse);
+  rpc GetExchangeRate (ExchangeRateRequest) returns (ExchangeRateResponse);
+}
+
+message AccountBalanceRequest {
+  string account_id = 1;
+  string tenant_id = 2;
+  string currency = 3;
+}
+
+message AccountBalanceResponse {
+  string account_id = 1;
+  string account_name = 2;
+  string balance = 3;
+  string currency = 4;
+  string as_of_date = 5;
+}
+
+message InvoiceSummaryRequest {
+  string tenant_id = 1;
+  string period_start = 2;
+  string period_end = 3;
+  string invoice_type = 4;
+}
+
+message InvoiceSummaryResponse {
+  int64 total_count = 1;
+  string total_amount = 2;
+  string paid_amount = 3;
+  string outstanding_amount = 4;
+  string currency = 5;
+}
+
+message BudgetValidationRequest {
+  string tenant_id = 1;
+  string department = 2;
+  string account_code = 3;
+  string amount = 4;
+  string currency = 5;
+  string period = 6;
+}
+
+message BudgetValidationResponse {
+  bool approved = 1;
+  string available_budget = 2;
+  string message = 3;
+}
+
+message ExchangeRateRequest {
+  string from_currency = 1;
+  string to_currency = 2;
+}
+
+message ExchangeRateResponse {
+  string from_currency = 1;
+  string to_currency = 2;
+  string rate = 3;
+  string effective_date = 4;
+}

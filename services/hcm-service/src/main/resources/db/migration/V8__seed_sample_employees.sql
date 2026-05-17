@@ -1,0 +1,8 @@
+-- Seed sample employees
+INSERT INTO employees (id, tenant_id, employee_id, first_name, last_name, email, phone, department, position, grade, employment_type, employment_status, join_date, basic_salary, salary_currency, allowances, active, created_by, created_at, updated_at)
+VALUES
+    (gen_random_uuid(), 'ORVION_DEFAULT', 'EMP-001', 'Budi', 'Santoso', 'budi.santoso@orvion.com', '08123456789', 'Finance', 'Finance Manager', 'M3', 'FULL_TIME', 'ACTIVE', '2023-01-15 00:00:00+00', 25000000.0000, 'IDR', 5000000.0000, true, 'SYSTEM', NOW(), NOW()),
+    (gen_random_uuid(), 'ORVION_DEFAULT', 'EMP-002', 'Siti', 'Rahmawati', 'siti.rahmawati@orvion.com', '08123456788', 'Engineering', 'Senior Engineer', 'S2', 'FULL_TIME', 'ACTIVE', '2022-06-01 00:00:00+00', 20000000.0000, 'IDR', 4000000.0000, true, 'SYSTEM', NOW(), NOW()),
+    (gen_random_uuid(), 'ORVION_DEFAULT', 'EMP-003', 'Agus', 'Wijaya', 'agus.wijaya@orvion.com', '08123456787', 'Sales', 'Sales Manager', 'M2', 'FULL_TIME', 'ACTIVE', '2023-03-20 00:00:00+00', 22000000.0000, 'IDR', 4500000.0000, true, 'SYSTEM', NOW(), NOW()),
+    (gen_random_uuid(), 'ORVION_DEFAULT', 'EMP-004', 'Dewi', 'Kurniawati', 'dewi.kurniawati@orvion.com', '08123456786', 'HR', 'HR Supervisor', 'S1', 'FULL_TIME', 'PROBATION', '2024-09-01 00:00:00+00', 12000000.0000, 'IDR', 2000000.0000, true, 'SYSTEM', NOW(), NOW()),
+    (gen_random_uuid(), 'ORVION_DEFAULT', 'EMP-005', 'Hendra', 'Pratama', 'hendra.pratama@orvion.com', '08123456785', 'Operations', 'Operations Staff', 'O1', 'CONTRACT', 'ACTIVE', '2024-07-10 00:00:00+00', 8500000.0000, 'IDR', 1500000.0000, true, 'SYSTEM', NOW(), NOW());

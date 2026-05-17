@@ -1,0 +1,46 @@
+syntax = "proto3";
+option java_package = "com.orvion.hcm.grpc";
+option java_multiple_files = true;
+package hcm;
+
+service HcmService {
+    rpc GetEmployeeInfo (EmployeeInfoRequest) returns (EmployeeInfoResponse);
+    rpc GetDepartmentHeadcount (HeadcountRequest) returns (HeadcountResponse);
+    rpc GetPayrollSummary (PayrollSummaryRequest) returns (PayrollSummaryResponse);
+}
+
+message EmployeeInfoRequest {
+    string employee_id = 1;
+    string tenant_id = 2;
+}
+
+message EmployeeInfoResponse {
+    string employee_id = 1;
+    string full_name = 2;
+    string department = 3;
+    string position = 4;
+    string employment_status = 5;
+}
+
+message HeadcountRequest {
+    string tenant_id = 1;
+    string department = 2;
+}
+
+message HeadcountResponse {
+    int32 total_headcount = 1;
+    map<string, int32> by_department = 2;
+}
+
+message PayrollSummaryRequest {
+    string tenant_id = 1;
+    int32 year = 2;
+    int32 month = 3;
+}
+
+message PayrollSummaryResponse {
+    int32 employee_count = 1;
+    string total_gross = 2;
+    string total_net = 3;
+    string total_tax = 4;
+}

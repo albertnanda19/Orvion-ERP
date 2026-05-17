@@ -1,0 +1,7 @@
+INSERT INTO customers (id, tenant_id, code, name, email, phone, address, credit_limit_amount, credit_limit_currency, outstanding_amount, outstanding_currency, payment_terms, customer_type, created_at, updated_at, created_by, updated_by)
+VALUES
+    (gen_random_uuid(), 'tenant1', 'CUST-00001', 'PT Teknologi Maju', 'info@teknologimaju.co.id', '021-5551001', 'Jl. Sudirman No. 123, Jakarta', 500000000.0000, 'IDR', 0.0000, 'IDR', 'NET30', 'CORPORATE', NOW(), NOW(), 'SYSTEM', 'SYSTEM'),
+    (gen_random_uuid(), 'tenant1', 'CUST-00002', 'CV Sinar Abadi', 'sales@sinarabadi.com', '031-5552002', 'Jl. Tunjungan No. 45, Surabaya', 250000000.0000, 'IDR', 50000000.0000, 'IDR', 'NET15', 'CORPORATE', NOW(), NOW(), 'SYSTEM', 'SYSTEM'),
+    (gen_random_uuid(), 'tenant1', 'CUST-00003', 'Budi Santoso', 'budi@email.com', '0812-3456-7890', 'Jl. Merdeka No. 67, Bandung', 50000000.0000, 'IDR', 0.0000, 'IDR', 'NET7', 'INDIVIDUAL', NOW(), NOW(), 'SYSTEM', 'SYSTEM'),
+    (gen_random_uuid(), 'tenant1', 'CUST-00004', 'PT Global Niaga', 'contact@globalniaga.co.id', '061-5553003', 'Jl. Diponegoro No. 89, Medan', 1000000000.0000, 'IDR', 200000000.0000, 'IDR', 'NET45', 'CORPORATE', NOW(), NOW(), 'SYSTEM', 'SYSTEM'),
+    (gen_random_uuid(), 'tenant1', 'CUST-00005', 'Siti Rahmawati', 'siti@email.com', '0856-7890-1234', 'Jl. A. Yani No. 12, Semarang', 25000000.0000, 'IDR', 5000000.0000, 'IDR', 'NET7', 'INDIVIDUAL', NOW(), NOW(), 'SYSTEM', 'SYSTEM');

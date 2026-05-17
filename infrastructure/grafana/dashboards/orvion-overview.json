@@ -1,0 +1,365 @@
+{
+  "dashboard": {
+    "title": "Orvion ERP Overview",
+    "editable": true,
+    "tags": ["orvion", "erp"],
+    "timezone": "browser",
+    "refresh": "30s",
+    "schemaVersion": 39,
+    "panels": [
+      {
+        "id": 1,
+        "title": "Services UP",
+        "type": "stat",
+        "gridPos": { "h": 8, "w": 6, "x": 0, "y": 0 },
+        "datasource": { "type": "prometheus" },
+        "targets": [
+          {
+            "expr": "count(up{job=~\"orvion-.*\"})",
+            "legendFormat": "Services UP",
+            "refId": "A"
+          }
+        ],
+        "fieldConfig": {
+          "defaults": {
+            "unit": "none",
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                { "color": "red", "value": null },
+                { "color": "orange", "value": 3 },
+                { "color": "green", "value": 6 }
+              ]
+            },
+            "color": { "mode": "thresholds" }
+          },
+          "overrides": []
+        }
+      },
+      {
+        "id": 2,
+        "title": "HTTP Requests / min",
+        "type": "stat",
+        "gridPos": { "h": 8, "w": 6, "x": 6, "y": 0 },
+        "datasource": { "type": "prometheus" },
+        "targets": [
+          {
+            "expr": "sum(rate(http_server_requests_seconds_count{job=~\"orvion-.*\"}[1m]))",
+            "legendFormat": "Requests/min",
+            "refId": "A"
+          }
+        ],
+        "fieldConfig": {
+          "defaults": {
+            "unit": "reqps",
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                { "color": "green", "value": null }
+              ]
+            },
+            "color": { "mode": "thresholds" }
+          },
+          "overrides": []
+        }
+      },
+      {
+        "id": 3,
+        "title": "Error Rate",
+        "type": "stat",
+        "gridPos": { "h": 8, "w": 6, "x": 12, "y": 0 },
+        "datasource": { "type": "prometheus" },
+        "targets": [
+          {
+            "expr": "sum(rate(http_server_requests_seconds_count{status=~\"5..\"}[1m])) / sum(rate(http_server_requests_seconds_count[1m])) * 100",
+            "legendFormat": "Error %",
+            "refId": "A"
+          }
+        ],
+        "fieldConfig": {
+          "defaults": {
+            "unit": "percent",
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                { "color": "green", "value": null },
+                { "color": "orange", "value": 1 },
+                { "color": "red", "value": 5 }
+              ]
+            },
+            "color": { "mode": "thresholds" },
+            "min": 0,
+            "max": 100
+          },
+          "overrides": []
+        }
+      },
+      {
+        "id": 4,
+        "title": "P95 Latency",
+        "type": "stat",
+        "gridPos": { "h": 8, "w": 6, "x": 18, "y": 0 },
+        "datasource": { "type": "prometheus" },
+        "targets": [
+          {
+            "expr": "histogram_quantile(0.95, sum(rate(http_server_requests_seconds_bucket[1m])) by (le))",
+            "legendFormat": "P95",
+            "refId": "A"
+          }
+        ],
+        "fieldConfig": {
+          "defaults": {
+            "unit": "s",
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                { "color": "green", "value": null },
+                { "color": "orange", "value": 0.5 },
+                { "color": "red", "value": 2 }
+              ]
+            },
+            "color": { "mode": "thresholds" },
+            "decimals": 3
+          },
+          "overrides": []
+        }
+      },
+      {
+        "id": 5,
+        "title": "Latency by Service (P50 / P95 / P99)",
+        "type": "timeseries",
+        "gridPos": { "h": 8, "w": 24, "x": 0, "y": 8 },
+        "datasource": { "type": "prometheus" },
+        "targets": [
+          {
+            "expr": "histogram_quantile(0.50, sum(rate(http_server_requests_seconds_bucket{job=~\"orvion-.*\"}[1m])) by (le, job))",
+            "legendFormat": "P50 {{job}}",
+            "refId": "A"
+          },
+          {
+            "expr": "histogram_quantile(0.95, sum(rate(http_server_requests_seconds_bucket{job=~\"orvion-.*\"}[1m])) by (le, job))",
+            "legendFormat": "P95 {{job}}",
+            "refId": "B"
+          },
+          {
+            "expr": "histogram_quantile(0.99, sum(rate(http_server_requests_seconds_bucket{job=~\"orvion-.*\"}[1m])) by (le, job))",
+            "legendFormat": "P99 {{job}}",
+            "refId": "C"
+          }
+        ],
+        "fieldConfig": {
+          "defaults": {
+            "unit": "s",
+            "decimals": 3,
+            "color": { "mode": "palette-classic" },
+            "custom": {
+              "lineInterpolation": "smooth",
+              "showPoints": "never",
+              "spanNulls": true
+            }
+          },
+          "overrides": []
+        }
+      },
+      {
+        "id": 6,
+        "title": "Invoices Created Today",
+        "type": "stat",
+        "gridPos": { "h": 8, "w": 6, "x": 0, "y": 16 },
+        "datasource": { "type": "prometheus" },
+        "targets": [
+          {
+            "expr": "sum(increase(http_server_requests_seconds_count{job=~\"orvion-finance.*\",uri=\"/invoices\"}[24h]))",
+            "legendFormat": "Invoices",
+            "refId": "A"
+          }
+        ],
+        "fieldConfig": {
+          "defaults": {
+            "unit": "none",
+            "color": { "mode": "thresholds" },
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                { "color": "green", "value": null }
+              ]
+            }
+          },
+          "overrides": []
+        }
+      },
+      {
+        "id": 7,
+        "title": "Active Purchase Orders",
+        "type": "stat",
+        "gridPos": { "h": 8, "w": 6, "x": 6, "y": 16 },
+        "datasource": { "type": "prometheus" },
+        "targets": [
+          {
+            "expr": "sum(orvion_purchase_orders_active{job=~\"orvion-procurement.*\"})",
+            "legendFormat": "Active POs",
+            "refId": "A"
+          }
+        ],
+        "fieldConfig": {
+          "defaults": {
+            "unit": "none",
+            "color": { "mode": "thresholds" },
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                { "color": "green", "value": null }
+              ]
+            }
+          },
+          "overrides": []
+        }
+      },
+      {
+        "id": 8,
+        "title": "Total Employees",
+        "type": "stat",
+        "gridPos": { "h": 8, "w": 6, "x": 12, "y": 16 },
+        "datasource": { "type": "prometheus" },
+        "targets": [
+          {
+            "expr": "sum(orvion_employees_total{job=~\"orvion-hr.*\"})",
+            "legendFormat": "Employees",
+            "refId": "A"
+          }
+        ],
+        "fieldConfig": {
+          "defaults": {
+            "unit": "none",
+            "color": { "mode": "thresholds" },
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                { "color": "green", "value": null }
+              ]
+            }
+          },
+          "overrides": []
+        }
+      },
+      {
+        "id": 9,
+        "title": "Total Products",
+        "type": "stat",
+        "gridPos": { "h": 8, "w": 6, "x": 18, "y": 16 },
+        "datasource": { "type": "prometheus" },
+        "targets": [
+          {
+            "expr": "sum(orvion_products_total{job=~\"orvion-inventory.*\"})",
+            "legendFormat": "Products",
+            "refId": "A"
+          }
+        ],
+        "fieldConfig": {
+          "defaults": {
+            "unit": "none",
+            "color": { "mode": "thresholds" },
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                { "color": "green", "value": null }
+              ]
+            }
+          },
+          "overrides": []
+        }
+      },
+      {
+        "id": 10,
+        "title": "PostgreSQL Connections",
+        "type": "stat",
+        "gridPos": { "h": 8, "w": 6, "x": 0, "y": 24 },
+        "datasource": { "type": "prometheus" },
+        "targets": [
+          {
+            "expr": "sum(pg_stat_activity_count{datname=~\"orvion.*\"})",
+            "legendFormat": "DB Connections",
+            "refId": "A"
+          }
+        ],
+        "fieldConfig": {
+          "defaults": {
+            "unit": "none",
+            "color": { "mode": "thresholds" },
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                { "color": "green", "value": null },
+                { "color": "orange", "value": 50 },
+                { "color": "red", "value": 80 }
+              ]
+            }
+          },
+          "overrides": []
+        }
+      },
+      {
+        "id": 11,
+        "title": "Redis Hit Ratio",
+        "type": "stat",
+        "gridPos": { "h": 8, "w": 6, "x": 6, "y": 24 },
+        "datasource": { "type": "prometheus" },
+        "targets": [
+          {
+            "expr": "sum(rate(redis_keyspace_hits_total[5m])) / (sum(rate(redis_keyspace_hits_total[5m])) + sum(rate(redis_keyspace_misses_total[5m]))) * 100",
+            "legendFormat": "Hit Ratio",
+            "refId": "A"
+          }
+        ],
+        "fieldConfig": {
+          "defaults": {
+            "unit": "percent",
+            "color": { "mode": "thresholds" },
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                { "color": "red", "value": null },
+                { "color": "orange", "value": 90 },
+                { "color": "green", "value": 95 }
+              ]
+            },
+            "min": 0,
+            "max": 100
+          },
+          "overrides": []
+        }
+      },
+      {
+        "id": 12,
+        "title": "RabbitMQ Queue Depths",
+        "type": "stat",
+        "gridPos": { "h": 8, "w": 12, "x": 12, "y": 24 },
+        "datasource": { "type": "prometheus" },
+        "targets": [
+          {
+            "expr": "sum(rabbitmq_queue_messages_ready{job=~\"orvion-.*\"})",
+            "legendFormat": "Queue Depth",
+            "refId": "A"
+          }
+        ],
+        "fieldConfig": {
+          "defaults": {
+            "unit": "none",
+            "color": { "mode": "thresholds" },
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                { "color": "green", "value": null },
+                { "color": "orange", "value": 100 },
+                { "color": "red", "value": 500 }
+              ]
+            }
+          },
+          "overrides": []
+        }
+      }
+    ]
+  },
+  "overwrite": true,
+  "inputs": []
+}

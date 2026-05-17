@@ -1,0 +1,38 @@
+server:
+  port: 8889
+
+spring:
+  application:
+    name: orvion-config-service
+  profiles:
+    active: native
+  security:
+    user:
+      name: config-admin
+      password: C0nfig@Admin2024
+  cloud:
+    config:
+      server:
+        native:
+          search-locations: classpath:/config
+        encrypt:
+          enabled: false
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,prometheus,metrics
+  endpoint:
+    health:
+      show-details: always
+  metrics:
+    tags:
+      application: ${spring.application.name}
+
+  tracing:
+    sampling:
+      probability: 1.0
+  otlp:
+    tracing:
+      endpoint: http://localhost:4318/v1/traces

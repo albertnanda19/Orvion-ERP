@@ -1,0 +1,23 @@
+# Grafana Datasources for Orvion ERP
+apiVersion: 1
+
+datasources:
+  - name: Prometheus
+    type: prometheus
+    access: proxy
+    url: http://localhost:9090
+    isDefault: true
+    editable: false
+
+  - name: Elasticsearch
+    type: elasticsearch
+    access: proxy
+    url: http://localhost:9200
+    database: orvion-audit-logs
+    isDefault: false
+    editable: false
+    jsonData:
+      timeField: timestamp
+      esVersion: 8.15.0
+      logLevelField: ""
+      logMessageField: ""

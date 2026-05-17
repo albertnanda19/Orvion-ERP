@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8"/>
+<style>
+body{font-family:Arial,sans-serif;color:#333;margin:0;padding:0;background-color:#f5f5f5}
+.container{max-width:600px;margin:20px auto;background:#fff;border-radius:8px;box-shadow:0 2px 4px rgba(0,0,0,0.1)}
+.header{background:#dc3545;color:#fff;padding:20px;border-radius:8px 8px 0 0}
+.header h1{margin:0;font-size:20px}
+.content{padding:20px}
+.content p{line-height:1.6}
+.details{background:#f8f9fa;border-radius:6px;padding:15px;margin:15px 0}
+.details table{width:100%;border-collapse:collapse}
+.details td{padding:8px;border-bottom:1px solid #dee2e6}
+.details td:first-child{font-weight:700;width:50%}
+.alert-box{background:#fff3cd;border:1px solid #ffc107;border-radius:6px;padding:12px;margin:15px 0;text-align:center}
+.alert-box strong{color:#856404}
+.footer{background:#f1f3f4;padding:15px;text-align:center;font-size:12px;color:#666;border-radius:0 0 8px 8px}
+</style>
+</head>
+<body>
+<div class="container">
+<div class="header">
+<h1>Low Stock Alert</h1>
+</div>
+<div class="content">
+<div class="alert-box"><strong>Immediate attention required!</strong></div>
+<p>Dear Warehouse Manager,</p>
+<p>The following product has reached its reorder point and requires immediate restocking.</p>
+<div class="details">
+<table>
+<tr><td>Product:</td><td th:text="${productName}">Product A</td></tr>
+<tr><td>SKU:</td><td th:text="${sku}">SKU-001</td></tr>
+<tr><td>Current Stock:</td><td th:text="${currentStock}">10</td></tr>
+<tr><td>Reserved Stock:</td><td th:text="${reservedStock}">2</td></tr>
+<tr><td>Available Stock:</td><td th:text="${availableStock}">8</td></tr>
+<tr><td>Reorder Point:</td><td th:text="${reorderPoint}">20</td></tr>
+<tr><td>Suggested Quantity:</td><td th:text="${suggestedQuantity}">50</td></tr>
+</table>
+</div>
+<p>Please initiate a purchase order to replenish the stock.</p>
+</div>
+<div class="footer">
+<p>Orvion ERP - Automated Notification</p>
+<p>This is an automated message. Please do not reply directly.</p>
+</div>
+</div>
+</body>
+</html>

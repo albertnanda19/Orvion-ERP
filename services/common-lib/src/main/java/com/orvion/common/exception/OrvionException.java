@@ -1,0 +1,23 @@
+package com.orvion.common.exception;
+
+import lombok.Getter;
+import org.springframework.http.HttpStatus;
+
+@Getter
+public class OrvionException extends RuntimeException {
+
+    private final String errorCode;
+    private final HttpStatus httpStatus;
+
+    public OrvionException(String errorCode, String message, HttpStatus httpStatus) {
+        super(message);
+        this.errorCode = errorCode;
+        this.httpStatus = httpStatus;
+    }
+
+    public OrvionException(String errorCode, String message, HttpStatus httpStatus, Throwable cause) {
+        super(message, cause);
+        this.errorCode = errorCode;
+        this.httpStatus = httpStatus;
+    }
+}

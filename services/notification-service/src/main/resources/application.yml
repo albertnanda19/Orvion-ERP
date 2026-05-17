@@ -1,0 +1,92 @@
+server:
+  port: 8086
+
+spring:
+  application:
+    name: orvion-notification-service
+  config:
+    import: optional:configserver:http://config-admin:C0nfig@Admin2024@localhost:8889
+  datasource:
+    url: jdbc:postgresql://localhost:5432/orvion_notification
+    username: orvion_notif_user
+    password: N0tif@2024
+    hikari:
+      maximum-pool-size: 10
+      minimum-idle: 2
+  flyway:
+    schemas: public
+    default-schema: public
+    create-schemas: false
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    show-sql: false
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+        jdbc:
+          time_zone: UTC
+  data:
+    redis:
+      database: 5
+      host: localhost
+      port: 6379
+      password: Redi$@Orv10n2024
+  rabbitmq:
+    host: localhost
+    port: 5672
+    username: orvion
+    password: 0rv1onR4bb1t
+    publisher-confirm-type: correlated
+    publisher-returns: true
+    listener:
+      simple:
+        retry:
+          enabled: true
+          max-attempts: 3
+          initial-interval: 3000
+          multiplier: 2.0
+        default-requeue-rejected: false
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: http://localhost:8180/realms/orvion
+  mail:
+    host: localhost
+    port: 1025
+    properties:
+      mail:
+        smtp:
+          auth: false
+          starttls:
+            enable: false
+
+springdoc:
+  api-docs:
+    path: /v3/api-docs
+  swagger-ui:
+    path: /swagger-ui.html
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health, prometheus, info
+  endpoint:
+    health:
+      show-details: always
+  metrics:
+    tags:
+      application: orvion-notification-service
+  tracing:
+    sampling:
+      probability: 1.0
+  otlp:
+    tracing:
+      endpoint: http://localhost:4318/v1/traces
+
+logging:
+  level:
+    com.orvion: DEBUG
+    org.springframework: WARN

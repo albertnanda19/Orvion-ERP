@@ -1,0 +1,33 @@
+syntax = "proto3";
+option java_package = "com.orvion.manufacturing.grpc";
+option java_multiple_files = true;
+package manufacturing;
+
+service ManufacturingService {
+  rpc GetWorkOrderStatus (WorkOrderStatusRequest) returns (WorkOrderStatusResponse);
+  rpc GetMachineUtilization (MachineUtilizationRequest) returns (MachineUtilizationResponse);
+}
+
+message WorkOrderStatusRequest {
+  string work_order_id = 1;
+  string tenant_id = 2;
+}
+
+message WorkOrderStatusResponse {
+  string work_order_id = 1;
+  string status = 2;
+  string product_id = 3;
+  string planned_quantity = 4;
+  string actual_quantity = 5;
+}
+
+message MachineUtilizationRequest {
+  string tenant_id = 1;
+}
+
+message MachineUtilizationResponse {
+  int32 total_machines = 1;
+  int32 running = 2;
+  int32 idle = 3;
+  int32 maintenance = 4;
+}

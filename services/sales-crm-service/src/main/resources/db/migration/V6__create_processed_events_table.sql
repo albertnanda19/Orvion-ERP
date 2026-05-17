@@ -1,0 +1,7 @@
+CREATE TABLE processed_events (
+    event_id UUID PRIMARY KEY,
+    event_type VARCHAR(100) NOT NULL,
+    processed_at TIMESTAMP WITH TIME ZONE NOT NULL
+);
+
+CREATE INDEX idx_pe_type ON processed_events(event_type);

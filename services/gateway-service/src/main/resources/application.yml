@@ -1,0 +1,178 @@
+server:
+  port: 8080
+
+spring:
+  application:
+    name: orvion-gateway-service
+  config:
+    import: optional:configserver:http://config-admin:C0nfig@Admin2024@localhost:8889
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: http://localhost:8180/realms/orvion
+  data:
+    redis:
+      host: localhost
+      port: 6379
+      password: 'Redi$@Orv10n2024'
+      timeout: 3000ms
+      lettuce:
+        pool:
+          max-active: 10
+          max-idle: 5
+          min-idle: 2
+  cloud:
+    gateway:
+      default-filters:
+        - DedupeResponseHeader=Access-Control-Allow-Credentials Access-Control-Allow-Origin
+        - name: RequestRateLimiter
+          args:
+            redis-rate-limiter.replenishRate: 100
+            redis-rate-limiter.burstCapacity: 200
+            redis-rate-limiter.requestedTokens: 1
+      globalcors:
+        corsConfigurations:
+          '[/**]':
+            allowedOrigins:
+              - "http://localhost:4200"
+            allowedMethods:
+              - GET
+              - POST
+              - PUT
+              - PATCH
+              - DELETE
+              - OPTIONS
+            allowedHeaders: "*"
+            allowCredentials: true
+            maxAge: 3600
+      routes:
+        - id: finance-service
+          uri: http://localhost:8081
+          predicates:
+            - Path=/api/v1/finance/**
+          filters:
+            - name: CircuitBreaker
+              args:
+                name: finance-cb
+                fallbackUri: forward:/fallback/finance
+            - name: Retry
+              args:
+                retries: 3
+                statuses: SERVICE_UNAVAILABLE
+            - AddRequestHeader=X-Service-Name, finance-service
+
+        - id: inventory-service
+          uri: http://localhost:8082
+          predicates:
+            - Path=/api/v1/inventory/**
+          filters:
+            - name: CircuitBreaker
+              args:
+                name: inventory-cb
+                fallbackUri: forward:/fallback/inventory
+            - AddRequestHeader=X-Service-Name, inventory-service
+
+        - id: hcm-service
+          uri: http://localhost:8083
+          predicates:
+            - Path=/api/v1/hcm/**
+          filters:
+            - name: CircuitBreaker
+              args:
+                name: hcm-cb
+                fallbackUri: forward:/fallback/hcm
+            - AddRequestHeader=X-Service-Name, hcm-service
+
+        - id: manufacturing-service
+          uri: http://localhost:8084
+          predicates:
+            - Path=/api/v1/manufacturing/**
+          filters:
+            - name: CircuitBreaker
+              args:
+                name: manufacturing-cb
+                fallbackUri: forward:/fallback/manufacturing
+            - AddRequestHeader=X-Service-Name, manufacturing-service
+
+        - id: sales-crm-service
+          uri: http://localhost:8085
+          predicates:
+            - Path=/api/v1/sales/**
+          filters:
+            - name: CircuitBreaker
+              args:
+                name: sales-cb
+                fallbackUri: forward:/fallback/sales
+            - AddRequestHeader=X-Service-Name, sales-crm-service
+
+        - id: notification-service
+          uri: http://localhost:8086
+          predicates:
+            - Path=/api/v1/notifications/**
+          filters:
+            - name: CircuitBreaker
+              args:
+                name: notification-cb
+                fallbackUri: forward:/fallback/notification
+            - AddRequestHeader=X-Service-Name, notification-service
+
+        - id: reporting-service
+          uri: http://localhost:8087
+          predicates:
+            - Path=/api/v1/reports/**
+          filters:
+            - name: CircuitBreaker
+              args:
+                name: reporting-cb
+                fallbackUri: forward:/fallback/reporting
+            - AddRequestHeader=X-Service-Name, reporting-service
+
+resilience4j:
+  circuitbreaker:
+    instances:
+      finance-cb:
+        slidingWindowSize: 10
+        failureRateThreshold: 50
+        waitDurationInOpenState: 10s
+        permittedNumberOfCallsInHalfOpenState: 3
+        automaticTransitionFromOpenToHalfOpenEnabled: true
+      inventory-cb:
+        slidingWindowSize: 10
+        failureRateThreshold: 50
+        waitDurationInOpenState: 10s
+      hcm-cb:
+        slidingWindowSize: 10
+        failureRateThreshold: 50
+        waitDurationInOpenState: 10s
+      manufacturing-cb:
+        slidingWindowSize: 10
+        failureRateThreshold: 50
+        waitDurationInOpenState: 10s
+      sales-cb:
+        slidingWindowSize: 10
+        failureRateThreshold: 50
+        waitDurationInOpenState: 10s
+      notification-cb:
+        slidingWindowSize: 10
+        failureRateThreshold: 50
+        waitDurationInOpenState: 10s
+      reporting-cb:
+        slidingWindowSize: 10
+        failureRateThreshold: 50
+        waitDurationInOpenState: 10s
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,prometheus,metrics,loggers
+  endpoint:
+    health:
+      show-details: always
+  tracing:
+    sampling:
+      probability: 1.0
+  otlp:
+    tracing:
+      endpoint: http://localhost:4318/v1/traces

@@ -1,0 +1,72 @@
+syntax = "proto3";
+option java_package = "com.orvion.inventory.grpc";
+option java_multiple_files = true;
+package inventory;
+
+service InventoryService {
+    rpc GetStockLevel (StockLevelRequest) returns (StockLevelResponse);
+    rpc GetProductCost (ProductCostRequest) returns (ProductCostResponse);
+    rpc CheckReorderStatus (ReorderStatusRequest) returns (ReorderStatusResponse);
+    rpc ReserveStock (StockReservationRequest) returns (StockReservationResponse);
+}
+
+message StockLevelRequest {
+    string product_id = 1;
+    string warehouse_id = 2;
+    string tenant_id = 3;
+}
+
+message StockLevelResponse {
+    string product_id = 1;
+    string product_name = 2;
+    string sku = 3;
+    string available_quantity = 4;
+    string reserved_quantity = 5;
+    string unit = 6;
+}
+
+message ProductCostRequest {
+    string product_id = 1;
+    string tenant_id = 2;
+    string costing_method = 3;
+}
+
+message ProductCostResponse {
+    string product_id = 1;
+    string unit_cost = 2;
+    string currency = 3;
+    string costing_method = 4;
+}
+
+message ReorderStatusRequest {
+    string tenant_id = 1;
+    string warehouse_id = 2;
+}
+
+message ReorderStatusResponse {
+    repeated ProductReorderItem items = 1;
+}
+
+message ProductReorderItem {
+    string product_id = 1;
+    string product_name = 2;
+    string current_stock = 3;
+    string reorder_point = 4;
+    string reorder_quantity = 5;
+    string preferred_supplier_id = 6;
+}
+
+message StockReservationRequest {
+    string product_id = 1;
+    string warehouse_id = 2;
+    string quantity = 3;
+    string tenant_id = 4;
+    string reference = 5;
+}
+
+message StockReservationResponse {
+    bool success = 1;
+    string reservation_id = 2;
+    string message = 3;
+    string available_after_reservation = 4;
+}

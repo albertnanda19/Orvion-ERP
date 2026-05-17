@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8"/>
+<style>
+body{font-family:Arial,sans-serif;color:#333;margin:0;padding:0;background-color:#f5f5f5}
+.container{max-width:600px;margin:20px auto;background:#fff;border-radius:8px;box-shadow:0 2px 4px rgba(0,0,0,0.1)}
+.header{background:#28a745;color:#fff;padding:20px;border-radius:8px 8px 0 0}
+.header h1{margin:0;font-size:20px}
+.content{padding:20px}
+.content p{line-height:1.6}
+.details{background:#f8f9fa;border-radius:6px;padding:15px;margin:15px 0}
+.details table{width:100%;border-collapse:collapse}
+.details td{padding:8px;border-bottom:1px solid #dee2e6}
+.details td:first-child{font-weight:700;width:40%}
+.footer{background:#f1f3f4;padding:15px;text-align:center;font-size:12px;color:#666;border-radius:0 0 8px 8px}
+.success-icon{text-align:center;font-size:48px;margin-bottom:10px}
+</style>
+</head>
+<body>
+<div class="container">
+<div class="header">
+<h1>Payment Confirmed</h1>
+</div>
+<div class="content">
+<div class="success-icon">&#10004;</div>
+<p>Dear <span th:text="${customerName}">Customer</span>,</p>
+<p>Your payment has been successfully processed.</p>
+<div class="details">
+<table>
+<tr><td>Payment Reference:</td><td th:text="${paymentReference}">PAY-001</td></tr>
+<tr><td>Invoice:</td><td th:text="${invoiceNumber}">INV-001</td></tr>
+<tr><td>Amount Paid:</td><td th:text="${currency} + ' ' + ${amount}">IDR 1,000,000</td></tr>
+<tr><td>Payment Method:</td><td th:text="${paymentMethod}">Bank Transfer</td></tr>
+<tr><td>Payment Date:</td><td th:text="${paymentDate}">2025-01-01</td></tr>
+</table>
+</div>
+<p>Thank you for your payment.</p>
+</div>
+<div class="footer">
+<p>Orvion ERP - Automated Notification</p>
+<p>This is an automated message. Please do not reply directly.</p>
+</div>
+</div>
+</body>
+</html>

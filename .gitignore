@@ -1,0 +1,105 @@
+# === Java / Maven ===
+target/
+*.class
+*.jar
+*.war
+*.ear
+*.log
+*.logs
+pom.xml.tag
+pom.xml.releaseBackup
+pom.xml.versionsBackup
+pom.xml.next
+release.properties
+dependency-reduced-pom.xml
+buildNumber.properties
+.mvn/timing.properties
+
+# === Spring Boot ===
+application-local.yml
+application-local.yaml
+application-dev.yml
+application-dev.yaml
+application-secret.yml
+application-secret.yaml
+application-*.secret.*
+*.env
+.env.*
+
+# === Angular / Node ===
+node_modules/
+dist/
+.angular/
+tmp/
+*.tsbuildinfo
+
+# === IDE ===
+.idea/
+*.iml
+*.iws
+*.ipr
+.vscode/
+.settings/
+.project
+.classpath
+.factorypath
+.springBeans
+*.swp
+*.swo
+*~
+
+# === OS ===
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+Desktop.ini
+
+# === Secret / Security ===
+*.pem
+*.key
+*.p12
+*.pfx
+*.keystore
+secrets/
+credentials*
+secret*
+
+# === Logs ===
+logs/
+*.log
+*.gz
+*.zip
+
+# === Proto / Generated ===
+proto/generated/
+**/target/generated-sources/
+
+# === Test ===
+**/test-output/
+**/surefire-reports/
+**/failsafe-reports/
+
+# === Docker ===
+docker-compose.override.yml
+
+# === Agent / Local config ===
+.agents/
+.claude/
+AGENTS.md
+CLAUDE.md
+graphify-out/
+.skills/
+
+# === Misc ===
+*.bak
+*.orig
+*.rej
+*.tmp
+*.swp
+*.swo
+*~
+.ensureBundled/

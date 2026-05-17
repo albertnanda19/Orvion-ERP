@@ -74,6 +74,13 @@ logs/
 *.gz
 *.zip
 
+# === Infrastructure binaries ===
+infrastructure/jaeger/jaeger-*/jaeger
+infrastructure/jaeger/jaeger-*/example-hotrod
+
+# === Skill lock files ===
+skills-lock.json
+
 # === Proto / Generated ===
 proto/generated/
 **/target/generated-sources/
